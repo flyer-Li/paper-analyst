@@ -23,6 +23,8 @@ All outputs follow `references/output-schema.md`. Paper type detection uses
 | `scripts/extract_pdf_meta.py` | Optional: extract PDF metadata to JSON |
 | `scripts/pdf_to_markdown.py` | Convert PDF to structured Markdown before analysis |
 | `scripts/extract_pdf_figures.py` | Extract figures from original PDF (used in presentation mode) |
+| `vi_system/vi-schema.json` | VI System JSON Schema |
+| `vi_system/example/vi.json` | Default VI scheme (academic style) |
 
 ## Mode Selection
 
@@ -128,6 +130,18 @@ Only in `extended` mode:
 
 Only in `presentation` or `presentation_with_figures` mode.
 
+### Step A0: Select VI System
+
+Load the Visual Identity (VI) configuration that defines colors, fonts, sizes,
+and chart styling for the generated PPT.
+
+- **Default**: `vi_system/example/vi.json` (academic style — light blue `#3E87FA`, white
+  background, Inter)
+- **User override**: if the user says "用 XX 风格" / "use XX style", look for
+  `vi_system/XX/vi.json`. If not found, fall back to default and note the fallback.
+
+Load the chosen `vi.json` and pass its values to the handoff in Step C.
+
 ### Step A: Collect Overrides
 
 Before building the slide plan, check if the user specified any of:
@@ -166,6 +180,7 @@ Follow `references/presentation-style-guide.md` for compression rules.
 Follow `references/pptx-handoff.md` for the exact handoff format.
 
 - Strip all `[原文声明]` / `[模型归纳]` tags before passing to pptx
+- Include VI System parameters (colors, fonts, sizes) from the selected `vi.json`
 - Do NOT include speaker notes in the handoff
 - Call pptx skill automatically — do not ask the user first
 - Exception: if user said "只要大纲" / "just the outline", output the slide plan as text and skip pptx

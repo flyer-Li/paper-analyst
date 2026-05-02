@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/flyer-Li/paper-analyst/vi-system-schema",
+  "title": "VI System Configuration",
+  "description": "Declarative Visual Identity configuration for paper-analyst presentations. Defines colors, fonts, spacing, layout, and chart styling.",
+  "type": "object",
+  "required": ["name", "version", "colors", "fonts", "sizes", "chart"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of this VI scheme"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this VI config",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of this VI scheme's visual style"
+    },
+    "colors": {
+      "type": "object",
+      "description": "Color palette definition (hex values, e.g. #1A365D)",
+      "required": ["primary", "secondary", "accent", "background", "text", "text_secondary"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Main brand color — used for title bars, headers, key highlights"
+        },
+        "secondary": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Supporting color — used for sub-headers, borders, dividers"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Accent color — used for emphasis, links, call-to-action elements"
+        },
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Slide background color"
+        },
+        "text": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Primary text color"
+        },
+        "text_secondary": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Secondary / muted text color"
+        },
+        "slide_title_bar": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Slide title bar / header stripe color (defaults to primary if omitted)"
+        }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "description": "Font family assignments",
+      "required": ["title", "body", "code"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Font family for slide titles and headers (e.g. 'Helvetica Neue', 'Arial', 'Noto Sans SC')"
+        },
+        "body": {
+          "type": "string",
+          "description": "Font family for body text and bullet points"
+        },
+        "code": {
+          "type": "string",
+          "description": "Font family for code, formulas, and technical notation"
+        }
+      }
+    },
+    "sizes": {
+      "type": "object",
+      "description": "Font size hierarchy in points (pt)",
+      "required": ["title", "subtitle", "heading", "body", "caption"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "integer",
+          "minimum": 18,
+          "maximum": 60,
+          "description": "Title slide / deck title font size (pt)"
+        },
+        "subtitle": {
+          "type": "integer",
+          "minimum": 14,
+          "maximum": 40,
+          "description": "Subtitle font size (pt)"
+        },
+        "heading": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 44,
+          "description": "Section heading / slide title font size (pt)"
+        },
+        "body": {
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 28,
+          "description": "Body text / bullet point font size (pt)"
+        },
+        "caption": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 20,
+          "description": "Caption, footnote, page number font size (pt)"
+        }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "description": "Chart and diagram color scheme",
+      "required": ["colors"],
+      "additionalProperties": false,
+      "properties": {
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+          },
+          "minItems": 3,
+          "maxItems": 10,
+          "description": "Ordered list of colors for chart series (bars, lines, slices)"
+        },
+        "grid_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Chart grid / axis line color"
+        },
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Chart background color (defaults to slide background if omitted)"
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "Layout preferences (all optional — pptx skill uses sensible defaults)",
+      "additionalProperties": false,
+      "properties": {
+        "margin_top": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Top margin in inches"
+        },
+        "margin_bottom": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Bottom margin in inches"
+        },
+        "margin_left": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Left margin in inches"
+        },
+        "margin_right": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Right margin in inches"
+        },
+        "title_alignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"],
+          "description": "Title text alignment"
+        },
+        "body_alignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"],
+          "description": "Body text alignment"
+        }
+      }
+    }
+  }
+}

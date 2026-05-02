@@ -19,6 +19,7 @@
 - **PPT 自动化管道**：演讲模式下自动提取 PDF 图表、构建幻灯片计划、调用 `pptx` skill 生成文件
 - **前作关系追踪**：`extended` 模式从参考文献中识别自引，推断课题组研究脉络（仅基于论文内部，不做外部检索）
 - **中英双语触发**：中英文触发词均支持
+- **可插拔 VI System**：声明式视觉规范配置（配色、字体、字号、图表配色），支持自定义风格
 
 ---
 
@@ -151,6 +152,11 @@ paper-analyst/
 │   ├── presentation-schema.md      # PPT 幻灯片结构 JSON 规范
 │   ├── presentation-style-guide.md # 演讲内容压缩规则
 │   └── pptx-handoff.md             # pptx skill 调用接口规范
+├── vi_system/
+│   ├── vi-schema.json              # VI 配置 JSON Schema
+│   └── example/
+│       ├── vi.json                 # 默认学术风格配置
+│       └── README.md               # VI 字段说明与自定义指南
 └── scripts/
     ├── __init__.py                 # Python 包标记
     ├── pdf_to_markdown.py          # PDF → Markdown 预处理（markitdown）
@@ -168,6 +174,35 @@ paper-analyst/
 | `pymupdf` | PDF 图表提取 | `pip install pymupdf` |
 | `pypdf` | PDF 元数据读取 | `pip install pypdf` |
 | `pptx` skill | PPT 文件生成 | 单独安装，见其 README |
+
+---
+
+## VI System（视觉规范）
+
+VI System 是一组声明式 JSON 配置，定义 PPT 的配色、字体、字号和图表配色方案。
+
+### 使用默认风格
+
+默认使用 `vi_system/example/` 的 Academic 风格（浅蓝主色 `#3E87FA`、白色背景、Inter 字体），无需额外配置。
+
+### 切换风格
+
+在触发词中指定风格名即可切换：
+
+```
+用 dark 风格生成 PPT
+use the dark style for the slides
+```
+
+系统会在 `vi_system/<name>/vi.json` 查找对应配置。
+
+### 自定义风格
+
+1. 复制示例目录：`cp -r vi_system/example vi_system/my-style`
+2. 编辑 `vi_system/my-style/vi.json`（修改颜色、字体、字号等）
+3. 使用：`用 my-style 风格生成 PPT`
+
+无需修改任何代码。详细字段说明见 [`vi_system/example/README.md`](vi_system/example/README.md)。
 
 ---
 
