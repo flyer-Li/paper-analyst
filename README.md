@@ -147,7 +147,11 @@ paper-analyst/
 ├── pyproject.toml                  # 项目元数据与依赖声明
 ├── requirements.txt                # pip 依赖清单
 ├── setup.py                        # 旧工具链兼容 shim
-├── SKILL.md                        # Skill 主配置（Claude Code 入口）
+├── SKILL.md                        # Skill 主配置（精简入口，按需加载 workflow）
+├── workflows/
+│   ├── analysis.md                 # 核心分析流程（Step 0–4，所有模式共用）
+│   ├── extended.md                 # Extended 模式：前作关系分析
+│   └── presentation.md             # Presentation 模式：幻灯片生成全流程
 ├── references/
 │   ├── output-schema.md            # 输出格式规范（7 节结构）
 │   ├── paper-type-rubric.md        # 论文类型分类规则
