@@ -1,5 +1,8 @@
 # pptx Skill Handoff Format
 
+> **Note**: This file applies **only when `slide_format = pptx`**. For the default HTML format,
+> see [`html-handoff.md`](html-handoff.md).
+
 ## When to Call pptx Skill
 
 After generating the slide plan (presentation-schema.md), automatically invoke the `pptx` skill with the structured prompt below. Do NOT ask the user — call it directly.
