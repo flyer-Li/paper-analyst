@@ -1,6 +1,6 @@
 # Analysis Workflow
 
-Used by: `quick`, `standard`, `extended`, `presentation`, `presentation_with_figures` modes.
+Used by: all modes. This is the core intellectual engine of paper-analyst.
 
 ## Step 0: PDF → Markdown Preprocessing
 
@@ -16,7 +16,7 @@ The script produces a `.md` file with:
 - **YAML front-matter**: source filename, page count, conversion timestamp
 - **Structured Markdown**: headings, tables, lists preserved from the PDF
 
-**All subsequent steps (Step 1–4) operate on the generated `.md` file, not the
+**All subsequent steps operate on the generated `.md` file, not the
 original PDF.** The only exception is figure extraction in
 `presentation_with_figures` mode (Step B0), which reads the original PDF because
 images cannot be represented in Markdown.
@@ -41,10 +41,54 @@ first for structured metadata.
 Read `references/paper-type-rubric.md` and classify. Do NOT assume AI/ML.
 Output the type label and 2–3 evidence indicators before proceeding.
 
-## Step 3: Execute Analysis
+## Step 3: Deep Analysis
 
-Follow `references/output-schema.md` for the selected mode. Apply all rules
-from `references/quality-checklist.md` throughout every section.
+This is the most important step. Follow `references/output-schema.md` for
+section structure, but go **far beyond filling in a template**. Your goal is
+to provide the kind of analysis a knowledgeable peer reviewer or labmate would
+give after reading the paper carefully.
+
+### 3a. Structural Understanding
+
+Read the paper systematically. For each section of the paper, identify:
+- What claim is being made?
+- What evidence supports it?
+- What is the logical flow from problem → method → result → conclusion?
+
+### 3b. Method Critique
+
+Don't just describe the method — analyze it:
+- What are the key design choices, and why might the authors have made them?
+- What trade-offs does this approach involve (accuracy vs. efficiency, generality vs. specialization)?
+- Are there alternative approaches the authors didn't consider? Why might those alternatives be relevant?
+- What assumptions does the method rely on, and how reasonable are they?
+
+### 3c. Results Interpretation
+
+Go beyond listing numbers:
+- Which results are most convincing, and which are weakest?
+- Are the benchmarks/datasets sufficient, or are there gaps in evaluation?
+- Do the results actually support the claims made, or is there overclaiming?
+- How do the numbers compare to what you'd expect from the field? (Use your knowledge — this is analytical reasoning, not fabrication.)
+
+### 3d. Impact Assessment
+
+Think about the broader implications:
+- What problem does this solve, and how important is that problem?
+- How does this relate to the current state of the field?
+- What downstream research or applications could this enable?
+- What are the practical limitations for real-world deployment?
+
+### 3e. Critical Gaps
+
+Identify what the paper doesn't address:
+- Missing ablations, comparisons, or evaluations
+- Unstated assumptions or scope limitations
+- Potential failure modes not discussed
+
+Apply all rules from `references/quality-checklist.md` throughout — but
+remember that **analytical reasoning is encouraged**. The checklist prevents
+fabrication of facts, not thinking.
 
 ## Step 4: Self-Check Before Output
 
@@ -53,6 +97,7 @@ Verify before finalizing:
 - Every contribution tagged `[原文声明]` or `[模型归纳]`
 - No section silently omitted — skipped sections state why
 - Paper type label matches rubric evidence
+- Analysis includes genuine insights, not just regurgitation
 
 ## Degraded Input Fallback
 

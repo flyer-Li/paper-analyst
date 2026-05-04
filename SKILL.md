@@ -64,12 +64,18 @@ After analysis, read `workflows/presentation.md` for the full slide generation f
 
 ## Anti-Hallucination Rules
 
-Full rules in `references/quality-checklist.md`. Non-negotiable constraints:
+Full rules in `references/quality-checklist.md`. Two principles:
 
-1. **Source tagging**: `[原文声明]` = directly stated in paper (cite location);
-   `[模型归纳]` = inferred by model (state reasoning basis)
-2. **Uncertainty**: `[未明确给出]` when absent; `[不确定]` when ambiguous
-3. **No domain assumption**: classify paper type first, always
-4. **No fabrication**: venue, DOI, year, affiliations not in text → `[未明确给出]`
-5. **Evidence binding**: each contribution must cite section/figure/table/quote
-6. **Degraded PDF**: state which sections were unreadable; do not fill gaps
+**1. Don't fabricate facts.** Venue, DOI, author affiliations, exact numbers — if not
+in the paper, mark `[未明确给出]`. Copy numerical results verbatim.
+
+**2. Do analyze deeply.** The anti-hallucination rules prevent fabrication of facts,
+**not** analytical reasoning. You are expected to:
+- Critique the method's design choices and trade-offs
+- Compare with other approaches using your domain knowledge
+- Evaluate whether results actually support the claims
+- Assess significance and identify limitations beyond what authors state
+- Reason about downstream impact
+
+Tag factual claims `[原文声明]` and analytical insights `[模型归纳]` — both are
+legitimate. `[模型归纳]` is a transparency marker, not a warning.
