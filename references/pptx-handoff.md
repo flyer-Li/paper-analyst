@@ -1,34 +1,8 @@
 # pptx Skill Handoff Format
 
-> **Note**: This file applies **only when `slide_format = pptx`**. For the default HTML format,
-> see [`html-handoff.md`](html-handoff.md).
-
 ## When to Call pptx Skill
 
 After generating the slide plan (presentation-schema.md), automatically invoke the `pptx` skill with the structured prompt below. Do NOT ask the user — call it directly.
-
-## VI System Parameters
-
-Before calling pptx, load the selected `vi_system/<name>/vi.json` and extract
-the following parameters for the handoff prompt.
-
-| Parameter | Source | Example |
-|-----------|--------|---------|
-| `vi_primary_color` | `colors.primary` | `#3E87FA` |
-| `vi_secondary_color` | `colors.secondary` | `#1E5FD9` |
-| `vi_accent_color` | `colors.accent` | `#DC2626` |
-| `vi_background_color` | `colors.background` | `#FFFFFF` |
-| `vi_text_color` | `colors.text` | `#0F172A` |
-| `vi_title_font` | `fonts.title` | `Inter` |
-| `vi_body_font` | `fonts.body` | `Inter` |
-| `vi_code_font` | `fonts.code` | `Menlo` |
-| `vi_title_size` | `sizes.title` | `44` |
-| `vi_heading_size` | `sizes.heading` | `28` |
-| `vi_body_size` | `sizes.body` | `16` |
-| `vi_chart_colors` | `chart.colors` | `#3E87FA, #1E5FD9, ...` |
-
-These are passed as **style hints** to the pptx skill, which will honor them
-as closely as the rendering engine allows.
 
 ## Handoff Prompt Template
 
@@ -39,16 +13,6 @@ Create a presentation with the following slides:
 
 **Deck:** {{deck_title}}
 **Style:** {{talk_style}}, audience: {{audience}}
-**Visual Style:**
-- Primary color: {{vi_primary_color}}
-- Secondary color: {{vi_secondary_color}}
-- Accent color: {{vi_accent_color}}
-- Background: {{vi_background_color}}
-- Text color: {{vi_text_color}}
-- Title font: {{vi_title_font}}, {{vi_title_size}}pt
-- Body font: {{vi_body_font}}, {{vi_body_size}}pt
-- Code font: {{vi_code_font}}
-- Chart colors: {{vi_chart_colors}}
 
 {{for each slide}}
 ---

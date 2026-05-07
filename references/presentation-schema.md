@@ -5,7 +5,6 @@
 ```json
 {
   "deck_title": "string",
-  "slide_format": "html | pptx (default: html)",
   "content_source": "standard | extended",
   "audience": "lab | conference | general",
   "talk_style": "technical | overview | discussion",
@@ -145,7 +144,6 @@
 | Field | Required | Notes |
 |-------|----------|-------|
 | `deck_title` | yes | Paper title (Chinese OK) |
-| `slide_format` | yes | `html` (default) or `pptx`. Determines generation path. |
 | `content_source` | yes | Which analysis layer feeds this |
 | `audience` | yes | Affects compression level |
 | `slide_count_target` | yes | Default 9; adjust per duration_hint |
