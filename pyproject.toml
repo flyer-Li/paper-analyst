@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paper-analyst"
+version = "0.1.0"
+description = "Claude Code skill for academic paper analysis with anti-hallucination tagging"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Yifei Li", email = "flyerli@example.com"},
+]
+keywords = ["academic", "paper", "analysis", "pdf", "claude-code", "skill"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+dependencies = [
+    "pypdf>=3.0.0",
+    "pymupdf>=1.23.0",
+    "markitdown[pdf]>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/flyer-Li/paper-analyst"
+Repository = "https://github.com/flyer-Li/paper-analyst"
+Issues = "https://github.com/flyer-Li/paper-analyst/issues"
+
+[project.scripts]
+extract-pdf-meta = "scripts.extract_pdf_meta:main"
+extract-pdf-figures = "scripts.extract_pdf_figures:main"
+pdf-to-markdown = "scripts.pdf_to_markdown:main"
+
+[tool.setuptools.packages.find]
+include = ["scripts*"]

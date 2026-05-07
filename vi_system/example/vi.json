@@ -1,0 +1,53 @@
+{
+  "name": "Academic",
+  "version": "2.0.0",
+  "description": "Clean academic presentation style — light blue primary (#3E87FA), white background, Inter sans-serif. Derived from the slides.html VI System v2. Suitable for lab meetings, conference talks, and thesis defenses.",
+
+  "colors": {
+    "primary": "#3E87FA",
+    "secondary": "#1E5FD9",
+    "accent": "#DC2626",
+    "background": "#FFFFFF",
+    "text": "#0F172A",
+    "text_secondary": "#475569",
+    "slide_title_bar": "#3E87FA"
+  },
+
+  "fonts": {
+    "title": "Inter",
+    "body": "Inter",
+    "code": "Menlo"
+  },
+
+  "sizes": {
+    "title": 44,
+    "subtitle": 24,
+    "heading": 28,
+    "body": 16,
+    "caption": 11
+  },
+
+  "chart": {
+    "colors": [
+      "#3E87FA",
+      "#1E5FD9",
+      "#7FAFFF",
+      "#16A34A",
+      "#CA8A04",
+      "#EA580C",
+      "#DC2626",
+      "#805AD5"
+    ],
+    "grid_color": "#E5E9F0",
+    "background": "#FFFFFF"
+  },
+
+  "layout": {
+    "margin_top": 0.35,
+    "margin_bottom": 0.3,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "title_alignment": "left",
+    "body_alignment": "left"
+  }
+}

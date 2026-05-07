@@ -15,9 +15,12 @@
 - **反幻觉机制**：每个观点强制标注 `[原文声明]` 或 `[模型归纳]`，并绑定原文位置证据
 - **论文类型感知**：先分类（AI/深度学习、传统算法、系统工程、实验实证、综述、跨学科），再套对应方法分析模板
 - **PDF 质量分层**：良好 / 降级 / 严重降级三档处理，优雅降级而非直接报错
+- **Markitdown 预处理**：分析前先将 PDF 转为结构化 Markdown，大幅降低 token 消耗
 - **PPT 自动化管道**：演讲模式下自动提取 PDF 图表、构建幻灯片计划、调用 `pptx` skill 生成文件
 - **前作关系追踪**：`extended` 模式从参考文献中识别自引，推断课题组研究脉络（仅基于论文内部，不做外部检索）
 - **中英双语触发**：中英文触发词均支持
+- **可插拔 VI System**：声明式视觉规范配置（配色、字体、字号、图表配色），支持自定义风格
+- **双格式幻灯片输出**：支持 HTML（默认，自包含网页文件）和 PPTX 两种格式，用户可自由选择
 
 ---
 
@@ -26,8 +29,8 @@
 ### 前置条件
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 已安装
-- Python 3.8+（用于 PDF 图表提取脚本）
-- Python 依赖：`pip install pymupdf pypdf`
+- Python 3.10+（markitdown 最低要求 3.10）
+- Python 依赖：`pip install pymupdf pypdf 'markitdown[pdf]'`
 - 如需生成 PPT，还需安装 anthropics官方的[`pptx` skill]及其依赖
 
 ### 安装
@@ -38,6 +41,24 @@ npx skills add flyer-Li/paper-analyst
 
 > 也可以手动克隆：`git clone https://github.com/flyer-Li/paper-analyst ~/.claude/skills/paper-analyst`
 
+### 安装 Python 依赖
+
+```bash
+# 方式一：pip install（推荐，自动注册 CLI 命令）
+pip install -e .
+
+# 方式二：仅安装依赖
+pip install -r requirements.txt
+```
+
+安装后可直接使用以下 CLI 命令：
+
+```bash
+pdf-to-markdown paper.pdf -o paper.md
+extract-pdf-meta paper.pdf
+extract-pdf-figures paper.pdf --output-dir ./out
+```
+
 ### 使用
 
 在 Claude Code 中，直接用自然语言触发：
@@ -47,6 +68,8 @@ npx skills add flyer-Li/paper-analyst
 /paper-analyst quick summary of this paper
 /paper-analyst 分析这篇文献与前作的关系
 /paper-analyst 将以上分析内容做成一个可以直接用来汇报的组会ppt，要求美观带图片
+/paper-analyst 做个组会汇报的 slides，用 html 格式
+/paper-analyst 帮我生成 PPTX 格式的幻灯片
 ```
 
 ---
@@ -58,7 +81,7 @@ npx skills add flyer-Li/paper-analyst
 | `quick` | "quick"、"简单说"、"一句话"、"简要" | 基础信息 + 摘要译文 + 3 个核心贡献 |
 | `standard` | （默认，最推荐） | 完整 6 节分析（基础信息 → 结论与局限） |
 | `extended` | "前作"、"课题组"、"prior work" | standard + 作者自引识别 + 研究脉络分析 |
-| `presentation` | "PPT"、"组会"、"汇报大纲"、"slides" | standard + 幻灯片大纲 + 自动生成 PPTX |
+| `presentation` | "PPT"、"组会"、"汇报大纲"、"slides" | standard + 幻灯片大纲 + 自动生成 HTML/PPTX |
 | `presentation_with_figures` | "图表"、"带图"、"关键图"、"figures" | presentation + PDF 图表提取 + 图表标注 |
 
 ---
@@ -121,15 +144,27 @@ npx skills add flyer-Li/paper-analyst
 
 ```
 paper-analyst/
+├── pyproject.toml                  # 项目元数据与依赖声明
+├── requirements.txt                # pip 依赖清单
+├── setup.py                        # 旧工具链兼容 shim
 ├── SKILL.md                        # Skill 主配置（Claude Code 入口）
 ├── references/
 │   ├── output-schema.md            # 输出格式规范（7 节结构）
 │   ├── paper-type-rubric.md        # 论文类型分类规则
 │   ├── quality-checklist.md        # 反幻觉检查清单
+│   ├── presentation-workflow.md    # Presentation 模式完整流程（Step A0–C）
 │   ├── presentation-schema.md      # PPT 幻灯片结构 JSON 规范
 │   ├── presentation-style-guide.md # 演讲内容压缩规则
-│   └── pptx-handoff.md             # pptx skill 调用接口规范
+│   ├── html-handoff.md             # HTML 幻灯片生成规范（默认格式）
+│   └── pptx-handoff.md             # pptx skill 调用接口规范（PPTX 格式）
+├── vi_system/
+│   ├── vi-schema.json              # VI 配置 JSON Schema
+│   └── example/
+│       ├── vi.json                 # 默认学术风格配置
+│       └── README.md               # VI 字段说明与自定义指南
 └── scripts/
+    ├── __init__.py                 # Python 包标记
+    ├── pdf_to_markdown.py          # PDF → Markdown 预处理（markitdown）
     ├── extract_pdf_meta.py         # PDF 元数据提取
     └── extract_pdf_figures.py      # PDF 图表提取
 ```
@@ -140,9 +175,61 @@ paper-analyst/
 
 | 依赖 | 用途 | 安装 |
 |------|------|------|
+| `markitdown` | PDF → Markdown 预处理（降低 token 消耗） | `pip install 'markitdown[pdf]'` |
 | `pymupdf` | PDF 图表提取 | `pip install pymupdf` |
 | `pypdf` | PDF 元数据读取 | `pip install pypdf` |
-| `pptx` skill | PPT 文件生成 | 单独安装，见其 README |
+| `pptx` skill | PPTX 格式幻灯片生成（可选，HTML 格式无需此依赖） | 单独安装，见其 README |
+
+---
+
+## VI System（视觉规范）
+
+VI System 是一组声明式 JSON 配置，定义 PPT 的配色、字体、字号和图表配色方案。
+
+### 使用默认风格
+
+默认使用 `vi_system/example/` 的 Academic 风格（浅蓝主色 `#3E87FA`、白色背景、Inter 字体），无需额外配置。
+
+### 切换风格
+
+在触发词中指定风格名即可切换：
+
+```
+用 dark 风格生成 PPT
+use the dark style for the slides
+```
+
+系统会在 `vi_system/<name>/vi.json` 查找对应配置。
+
+### 自定义风格
+
+1. 复制示例目录：`cp -r vi_system/example vi_system/my-style`
+2. 编辑 `vi_system/my-style/vi.json`（修改颜色、字体、字号等）
+3. 使用：`用 my-style 风格生成 PPT`
+
+无需修改任何代码。详细字段说明见 [`vi_system/example/README.md`](vi_system/example/README.md)。
+
+---
+
+## 幻灯片格式
+
+Presentation 模式支持两种幻灯片输出格式：
+
+| 格式 | 默认 | 说明 | 依赖 |
+|------|------|------|------|
+| **HTML** | 是 | 自包含网页文件，浏览器打开即可演示，支持键盘翻页 | 无 |
+| **PPTX** | 否 | 标准 PowerPoint 格式，需 `pptx` skill | `pptx` skill |
+
+### 如何选择格式
+
+- **默认（推荐）**：不指定格式时，Agent 会询问你的偏好；若不回答则默认生成 HTML
+- **指定 HTML**：在触发词中包含 "html"，如 `做个组会汇报的 slides，用 html 格式`
+- **指定 PPTX**：在触发词中包含 "pptx"，如 `生成 PPTX 格式的幻灯片`
+
+HTML 格式的优势：
+- 无需额外依赖，Agent 直接生成
+- 单文件，浏览器打开即用
+- Token 消耗更低（无需调用外部 skill）
 
 ---
 

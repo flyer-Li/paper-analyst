@@ -1,0 +1,5 @@
+# paper-analyst dependencies
+# Synced from pyproject.toml
+pypdf>=3.0.0
+pymupdf>=1.23.0
+markitdown[pdf]>=0.1.0
